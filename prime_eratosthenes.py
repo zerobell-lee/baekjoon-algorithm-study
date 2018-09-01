@@ -6,19 +6,17 @@ m, n = map(int, sys.stdin.readline().rstrip().split())
 arr = [True for i in range(n + 1)]
 
 arr[1] = False
+primes = [2]
 
-for i in range(2, n+1):
+for i in range(3, n+1, 2):
     if not arr[i]:
         continue
 
-    for j in range(i*2, n+1, i):
+    primes.append(i)
+
+    for j in range(i*3, n+1, i*2):
         arr[j] = False
 
-
-result = ''
-
-for i in range(m, n+1):
-    if arr[i]:
-        result += '%d\n'%i
-
-sys.stdout.write(result)
+for i in primes:
+    if m <= i <= n:
+        sys.stdout.write('%d\n'%i)
