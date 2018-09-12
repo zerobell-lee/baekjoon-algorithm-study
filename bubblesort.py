@@ -1,48 +1,38 @@
 import sys
 
-
-def search(arr, begin, end, num):
-    mid = (begin + end)//2
+def search(a, begin, end, num):
     new_begin = begin
-    new_mid = mid
     new_end = end
 
-    while begin <= new_begin <= new_end:
-        if arr[new_mid] == num:
-            if new_mid < end and arr[new_mid + 1] > num:
-                return new_mid + 1
+    while begin <= new_begin <= new_end <= end:
+        mid = (new_begin + new_end) // 2
+        if a[mid] == num:
+            if mid == end:
+                return end
             else:
-                new_begin = new_mid + 1
-                new_mid = (new_begin + new_end) // 2
-        elif arr[new_mid] < num:
-            new_begin = new_mid + 1
-            new_mid = (new_begin + new_end) // 2
+                if a[mid+1] > num:
+                    return mid
+                else:
+                    new_begin = mid+1
+        elif a[mid] < num:
+            new_begin = mid+1
         else:
-            if new_mid > begin and arr[new_mid - 1] < num:
-                return new_mid
-            else:
-                new_end = new_mid - 1
-                new_mid = (new_begin + new_end) // 2
-
-    return begin
-
+            new_end = mid-1
 
 
 arr = []
+
 
 n = int(sys.stdin.readline())
 
 for i in range(n):
     arr.append(int(sys.stdin.readline()))
 
-last_border = 0
-last_val = arr[0]
-cnt = 0
+sorted_arr = [x for x in sorted(arr)]
+val = 0
 
 for i in range(n):
-    if last_val > arr[i]:
-        cnt += i - search(arr, last_border, i-1, arr[i])
-        last_border = i
-    last_val = arr[i]
+    tmp = i - search(sorted_arr, 0, n-1, arr[i])
+    val = max(val, tmp)
 
-sys.stdout.write(str(cnt+1))
+sys.stdout.write(str(val+1))
